@@ -1,66 +1,26 @@
-import React, { useEffect, useState } from "react";
-import AddUser from "./AddUser";
-import EditUser from "./EditUser";
-
 function UserList() {
-  const [users, setUsers] = useState([]);
-  const [editingUser, setEditingUser] = useState(null);
-
-  const fetchUsers = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/users");
-      const data = await res.json();
-
-      // IMPORTANT FIX
-      if (Array.isArray(data)) {
-        setUsers(data);
-      } else {
-        setUsers([]);
-      }
-    } catch (err) {
-      console.error(err);
-      setUsers([]);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const deleteUser = async (id) => {
-    await fetch(`http://localhost:5000/api/users/${id}`, {
-      method: "DELETE"
-    });
-    fetchUsers();
-  };
+  const users = [
+    { name: "Test User", email: "test@example.com" },
+    { name: "User Test", email: "usertest@example.com" }
+  ];
 
   return (
-    <div>
-      {editingUser ? (
-        <EditUser
-          user={editingUser}
-          refresh={fetchUsers}
-          cancel={() => setEditingUser(null)}
-        />
-      ) : (
-        <AddUser refresh={fetchUsers} />
-      )}
+    <div className="card">
+      <h2>User List</h2>
 
-      <h3>User List</h3>
+      {users.map((user, index) => (
+        <div className="user-item" key={index}>
+          <div>
+            <strong>{user.name}</strong>
+            <p>{user.email}</p>
+          </div>
 
-      {users.length === 0 ? (
-        <p>No users found</p>
-      ) : (
-        <ul>
-          {users.map((u) => (
-            <li key={u.id}>
-              {u.name} — {u.email}
-              <button onClick={() => setEditingUser(u)}>Edit</button>
-              <button onClick={() => deleteUser(u.id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
-      )}
+          <div>
+            <button className="edit-btn">Edit</button>
+            <button className="delete-btn">Delete</button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

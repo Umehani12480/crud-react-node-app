@@ -1,11 +1,14 @@
-
 import React from "react";
-import UserList from "./views/UserList";
+import './App.css';
+import AddUser from './views/AddUser';
+import UserList from './views/UserList';
 
 function App() {
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>CRUD Application</h2>
+    <div className="app-container">
+      <h1>CRUD Application using MERN Stack (M - MySql) </h1>
+
+      <AddUser />
       <UserList />
     </div>
   );
